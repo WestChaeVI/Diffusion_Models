@@ -13,7 +13,7 @@
 + lr : 2e-5    
  
 <p align="center">
-<img src="https://github.com/WestChaeVI/CNN-models/assets/104747868/61d00cea-c8b2-4155-8d03-114b017cc031" width="850" height="400">  
+<img src="https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/8adc1d09-3930-4c72-97d5-f119ce79cc79" width="1500" height="250">  
 </p>     
 
 ------------------------------------------------------------------------------------------------------------       
