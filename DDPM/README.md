@@ -1,4 +1,4 @@
-[Denoising Diffusion Probabilistic Models (2020)](https://arxiv.org/pdf/2006.11239.pdf)       
+# [Denoising Diffusion Probabilistic Models (2020)](https://arxiv.org/pdf/2006.11239.pdf)       
 
 <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/4a5ac0ed-4966-4efb-8875-3301f6d2a5b9'></p>       
 
