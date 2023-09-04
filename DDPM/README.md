@@ -242,10 +242,62 @@ $$\mathcal{L}\_{t-1} \ = \ D_{KL} (q(x_{t-1} | x_t, \ x_0) \ || \ p_{\theta} (x_
     >      
     > $\mathbb{E}\_{x_0, \ \epsilon} \left\[ \frac{\beta_t^2}{2\sigma_t^2 \alpha_t (1 - \bar{\alpha}_t)} \lVert \epsilon \ - \ \epsilon\_theta ( \sqrt{\bar{\alpha}_t} x_0 \ + \ \sqrt{1 - \bar{\alpha}_t} \epsilon, \ t ) \rVert^2 \right\]$     
     >      
-    > <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/acb7500f-7b3a-405e-adc1-d3630e6bde7b'></p>  
+    > <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/acb7500f-7b3a-405e-adc1-d3630e6bde7b'></p>    
+
+  - $\text{5}$. Sampling    
+
+    > 위 과정들을 통해서 $\mu_theta$를 얻어내면, 이를 활용해서 우리는 $p_theta(x_{t-1} | x_t)$로 부터 $x_{t-1}$을 sampling할 수 있다. 이 과정은 논문에서 다음과 같은 알고리즘으로 표현한다.     
+    >       
+    > <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/a41e783a-ab6a-4102-9bde-98e894e38f16'></p>    
+
+  - $\text{6}$. $\mathcal{L}_{t-1}$     
+
+    > 위의 재료들 $(q, \ p_theta, \ \sum\nolimits_{\theta})$을 잘 조합하여 $D_{KL}$ 을 계산하면 다음과 같이 쓸 수 있다.    
+    >       
+    > 아래 식을 보면 expectation의 기준이 $q$에서 $x_0, \ \epsilon$으로 달라지는데, forward process에 있어서 어떠한 특정 time step $t$에 대한 Gaussian Distribution이 time과 $x_0$만 주어진다면 reparameterize를 통해 표현할 수 있기 때문에 이렇게 표현되는 것은 자연스럽다.      
+    >      
+    >        
+    > $$x_t(x_0, \ \epsilon) \ = \ \sqrt{\bar{\alpha}\_t} x_0 \ + \ \sqrt{1 - \bar{\alpha}\_t} \epsilon \ \text{for} \ \epsilon \ \sim \ \mathcal{N}(0, \ I)$$        
+    > $$\mathcal{L}\_{t-1} \ = \ \mathbb{E}\_q \left\[ \frac{1}{2\sigma_t^2} \lVert \tilde{\mu}\_t (x_t, \ x_0) \ - \ \mu_\theta (x_t, \ t) \rVert^2 \right\] \ + \ C$$       
+    > $$\mathcal{L}\_{t-1} \ - \ C \ = \ \mathbb{E}\_{x_0 , \epsilon} \left\[ \frac{1}{2\sigma_t^2} \lVert \tilde{\mu}\_t (x_t(x_0, \ \epsilon), \ \frac{1}{\sqrt{\bar{\alpha}\_t}} (x_t(x_0, \ \epsilon)) \ - \ \sqrt{1 - \bar{\alpha}\_t}\epsilon) \ - \ \mu_\theta(x_t(x_0, \ \epsilon), \ t)\rVert^2 \right\]$$       
+    > $$= \ \mathbb{E}\_{x_0 , \epsilon} \left\[ \frac{1}{2\sigma_t^2} \lVert \frac{1}{\sqrt{\alpha}\_t} (x_t(x_0, \ \epsilon) \ - \ \frac{\beta_t}{\sqrt{1 - \bar{\alpha}\_t}}, \ \epsilon ) \ - \ \mu_\theta(x_t(x_0, \ \epsilon), \ t)\rVert^2 \right\]$$       
+
+  - $\text{7}$. $\mathcal{L}_{simple}(\theta)$   
+
+    > 마지막으로, 위의 loss function을 $\epsilon$에 대한 식의 형태로 다시 한번 표현할 수 있다.       
+    >       
+    > 이를 **simplified objective function**이라고 부르고, 이러한 loss function을 통해 training을 하면 학습이 좀 더 잘 된다는 것을 확인할 수 있다.     
+    >       
+    > 아래와 같은 simplified objective을 통해 diffusion process를 학습하면 매우 작은 $t$ 에서 뿐만 아니라 큰 $t$에 대해서도 network 학습이 가능하기 때문에 매우 효과적이라고 저자는 말한다.      
+    >        
+    > $$\mathcal{L}\_{simple}(\theta) \ := \ \mathbb{E}\_{t, \ x_0, \ \epsilon} \left\[ \lVert \epsilon \ - \ \epsilon_\theta (\sqrt{\bar{\alpha}\_t} x_0 \ + \ \sqrt{1 - \bar{\alpha}\_t} \epsilon, \ t) \rVert^2 \right\]$$      
 
 
-------------------------------           
+  - $\text{8]$. Training     
+
+    > 결론적으로 DDPM의 training 과정을 몇 줄의 알고리즘으로 요약하면, 다음과 같다.      
+    >       
+    > <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/ec11a6bd-da41-40ae-87d5-0418bd05ab4b'></p>      
+
+
+  - $\text{9}$. $\mathcal{L}\_0$      
+
+    > 마지막으로, loss function의 마지막 구성 요소인 $\mathcal{L}\_0$는 간단한 두 normal 분포 사이의 KL divergence를 구하는 식이며, 논문에서는 다음과 같은 식에 의해 data scaling 역할을 해준다고 말한다.     
+    >      
+    > <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/36a3626a-51ad-4da8-8403-c9d3adfce0f5'></p>      
+
+------------------------------     
+
+## Experiments       
+
++ DDPM paper의 핵심은 reverse process의 $\mathcal{L}\_{t-1}$을 아주 간략하게 다시 정의한 것에 있다.     
+
++ 이렇게 forward diffusion process와 reverse diffusion process를 정의하여 generaitve model을 구성하고, 이들로부터 이미지 data를 만들어보면, 좋은 quality의 image를 generate하는 것을 알 수 있다.     
+
+  - Image generation score     
+   > <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/172da5eb-40a4-4600-93af-9fd3e0374d5b'></p>      
+
+      
 
 
 
