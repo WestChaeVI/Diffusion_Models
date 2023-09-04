@@ -273,7 +273,7 @@ $$\mathcal{L}\_{t-1} \ = \ D_{KL} (q(x_{t-1} | x_t, \ x_0) \ || \ p_{\theta} (x_
     > $$\mathcal{L}\_{simple}(\theta) \ := \ \mathbb{E}\_{t, \ x_0, \ \epsilon} \left\[ \lVert \epsilon \ - \ \epsilon_\theta (\sqrt{\bar{\alpha}\_t} x_0 \ + \ \sqrt{1 - \bar{\alpha}\_t} \epsilon, \ t) \rVert^2 \right\]$$      
 
 
-  - $\text{8]$. Training     
+  - $\text{8}$. Training     
 
     > 결론적으로 DDPM의 training 과정을 몇 줄의 알고리즘으로 요약하면, 다음과 같다.      
     >       
@@ -294,27 +294,28 @@ $$\mathcal{L}\_{t-1} \ = \ D_{KL} (q(x_{t-1} | x_t, \ x_0) \ || \ p_{\theta} (x_
 
 + 이렇게 forward diffusion process와 reverse diffusion process를 정의하여 generaitve model을 구성하고, 이들로부터 이미지 data를 만들어보면, 좋은 quality의 image를 generate하는 것을 알 수 있다.     
 
-  - Image generation score     
-   > <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/172da5eb-40a4-4600-93af-9fd3e0374d5b'></p>      
+#### Sample quality      
 
-      
+<p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/172da5eb-40a4-4600-93af-9fd3e0374d5b'></p>            
 
++ DDPM의 FID score는 **3.17**로서 Unconditional 생성모형 중 가장 높은 sample quality를 보인다.     
 
++ 계수 Term을 제외한 경우 ($$Ours \ : \ \mathcal{L}_{simple}$$)는 제외하지 않은 경우 ($$Ours \ : \ \mathcal{L}$$)에 비해 NLL(Negative Likelihood loss)가 높지만, Sample quality(FID score)는 월등히 높음을 확인할 수 있다.     
 
+#### Ablation study for 'Objective function'     
 
-------------------------------           
+<p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/2757e98f-9cca-4c0b-a236-08c1cea75e74'></p>      
 
++ $\tilde{\mu}$를 예측하는 objective function의 경우, Fixwd variance를 사용했을 때, 성능이 향상. 다만, objective function의 simplification에서는 성능이 매우 악화된 것을 알 수 있다.     
 
++ $\epsilon$을 예측하는 objective function의 경우, Fixed variance를 사용할 경우 & simplication을 적용할 경우 성능이 크게 향상된 것을 알 수 있다.      
 
+  - <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/02aa6a71-a7f7-4b28-b2a7-23787484a275'></p>      
 
+  - obj fucntion (3) : Coefficient term은 $t$가 증가할 수록 그 값이 작아지는 경향을 갖게 된다.     
+    > *따라서 Coefficient term이 존재할 경우, large $t$ 시점(더 noisy)의 loss가 상대적으로 down-weight 되는 효과가 발생*       
+    > 즉, 더 noisy한 상태서의 denoising 상당히 경시될 수 있음      
 
+  - **obj fucntion (4) : Coefficient term을 제거함으로써, large $t$ 사점(더 noisy)의 loss 비중을 더 높일 수 있다.**    
+    > **이를 통해 모델이 noise가 심한 이미지(large $t$ 시점의 상태)의 denoising에 집중하도록 유도**     
 
-
-------------------------------           
-
-
-
-
-
-
-------------------------------           
