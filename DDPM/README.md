@@ -166,7 +166,7 @@ $$\mathbb{E}\_q \left\[\underbrace{D_{KL}(q(\mathrm{x}\_T | \mathrm{x}\_0) || p(
     >      
     >  - $P(x_{t-1} | x_t) \ = \ \frac{P(x_t | x_{t-1} P(x_{t-1}}{P(x_t)}$      
     >       
-    > $p_\theta(x_{t-1} | x_t) \ := \ \mathcal{N}(x_{t-1} ; \ \mu_{theta}(x_t, \ t), \sum\nolimits_{\theta} (x_t, \ t))$    
+    > $p_\theta(x_{t-1} | x_t) \ := \ \mathcal{N}(x_{t-1} ; \ \mu_{\theta}(x_t, \ t), \sum\nolimits_{\theta} (x_t, \ t))$    
 
   - $\mathcal{L}\_{0}$ : latent $x_1$으로부터 data $x_0$를 추정하는 likelihood, 이를 maximize하는 방향으로 학습한다.    
  
