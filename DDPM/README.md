@@ -60,6 +60,7 @@ $$q(\mathrm{x}\_{1:T} | \mathrm{x}\_0) \ := \ \prod_{t=1}^{T} q(\mathrm{x}\_t | 
   - 매 step마다 gaussian distribution에서 reparameterize를 통해 smapling하게 되는 형태로 noise가 추가되는데, 이때 **단순히 noise만을 더해주는 것이 아니라 $\sqrt{1 \ - \ \beta_t}$ 로 scaling하는 이유는 variance가 발산하는 것을 막기 위함이다.**    
 
   - variance를 unit하게 가둠으로써 forward-reverse 과정에서 variance가 일정 수준으로 유지될 수 있게 된다.    
+    > 즉, 데이터의 변화가 너무 크지 않도록 조절하는 과정을 의미함.     
 
     $$x_t \ = \ \sqrt{1 \ - \ \beta_t} x_{t-1} \ + \ \beta_t \cdot \epsilon$$
 
@@ -152,7 +153,7 @@ $$\mathbb{E}\_q \left\[\underbrace{D_{KL}(q(\mathrm{x}\_T | \mathrm{x}\_0) || p(
 
 + 위 식에서 각각의 term이 가지는 의미를 하나씩 살펴보면 다음과 같다.     
 
-  - $\mathcal{L}\_T$ : $p(\cdot)$가 generate하는 $noise(x_T)$와 $x_0$라는 데이터가 주어졌을 때 $q(\cdot)$가 만들어내는 $noise(x_T$ 간의 분포 차이    
+  - $\mathcal{L}\_T$ : $p(\cdot)$가 generate하는 $noise(x_T)$와 $x_0$라는 데이터가 주어졌을 때 $q(\cdot)$가 만들어내는 $noise(x_T)$ 간의 분포 차이    
 
     > $$q(x_t | x_0) \ = \ \mathcal{N}(x_t ; \ \sqrt{\bar{\alpha_t}} x_0, \ (1 - \bar{\alpha_t})I)$$     
     >       
@@ -164,7 +165,7 @@ $$\mathbb{E}\_q \left\[\underbrace{D_{KL}(q(\mathrm{x}\_T | \mathrm{x}\_0) || p(
     > $q(x_{t-1} | x_t)$는 알 수 없지만, $q(x_{t-1} | x_t, \ x_0)$은 알 수 있다.     
     > - by Bayes' rule $\rightarrow$ posterior, prior 사용    
     >      
-    >  - $P(x_{t-1} | x_t) \ = \ \frac{P(x_t | x_{t-1} P(x_{t-1}}{P(x_t)}$      
+    >  - $P(x_{t-1} | x_t) \ = \ \frac{P(x_t | x_{t-1}) P(x_{t-1})}{P(x_t)}$      
     >       
     > $p_\theta(x_{t-1} | x_t) \ := \ \mathcal{N}(x_{t-1} ; \ \mu_{\theta}(x_t, \ t), \sum\nolimits_{\theta} (x_t, \ t))$    
 
@@ -236,11 +237,11 @@ $$\mathcal{L}\_{t-1} \ = \ D_{KL} (q(x_{t-1} | x_t, \ x_0) \ || \ p_{\theta} (x_
 
   - $\text{4}$. $\mu_\theta(x_t, \ t)$     
 
-    > $p(\cdot)$의 평균 $\mu_theta (x_t, \ t)$ 는 다음과 같이 정의한다.    
+    > $p(\cdot)$의 평균 $\mu_\theta (x_t, \ t)$ 는 다음과 같이 정의한다.    
     >      
-    > $\mu_\theta(x_t, \ t) \ = \ \tilde{\mu}\_t \left\( x_t, \ \frac{1}{\sqrt{\bar{\alpha}_t}} (x_t - \sqrt{1 - \bar{\alpha}\_t} \epsilon\_theta (x_t)) \right\) \ = \ \frac{1}{\sqrt{\alpha_t}} \left\( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}\_t}} \epsilon\_theta (x_t, \ t) \right\)$     
+    > $\mu_\theta(x_t, \ t) \ = \ \tilde{\mu}\_t \left\( x_t, \ \frac{1}{\sqrt{\bar{\alpha}_t}} (x_t - \sqrt{1 - \bar{\alpha}\_t} \epsilon\_{\theta} (x_t)) \right\) \ = \ \frac{1}{\sqrt{\alpha_t}} \left\( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}\_t}} \epsilon\_{\theta} (x_t, \ t) \right\)$     
     >      
-    > $\mathbb{E}\_{x_0, \ \epsilon} \left\[ \frac{\beta_t^2}{2\sigma_t^2 \alpha_t (1 - \bar{\alpha}_t)} \lVert \epsilon \ - \ \epsilon\_theta ( \sqrt{\bar{\alpha}_t} x_0 \ + \ \sqrt{1 - \bar{\alpha}_t} \epsilon, \ t ) \rVert^2 \right\]$     
+    > $\mathbb{E}\_{x_0, \ \epsilon} \left\[ \frac{\beta_t^2}{2\sigma_t^2 \alpha_t (1 - \bar{\alpha}_t)} \lVert \epsilon \ - \ \epsilon\_{\theta} ( \sqrt{\bar{\alpha}_t} x_0 \ + \ \sqrt{1 - \bar{\alpha}_t} \epsilon, \ t ) \rVert^2 \right\]$     
     >      
     > <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/acb7500f-7b3a-405e-adc1-d3630e6bde7b'></p>    
 
