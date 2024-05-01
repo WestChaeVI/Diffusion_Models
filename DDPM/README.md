@@ -40,7 +40,7 @@
 
 + 그럼 $x_0$에 noise를 적용해서 $x_1$를 만드는 것을 **$q(x_1|x_0)$** 이라고 표현할 수 있다.    
 
-  - 위 표현을 time $t$에 대해 general하게 표현한다면 **$q(x_t|x_{t-1}$** 으로 표현할 수 있다.    
+  - 위 표현을 time $t$에 대해 general하게 표현한다면 **$q(x_t|x_{t-1})$** 으로 표현할 수 있다.    
 
   - 이를 forward process(or diffusion process)라고 부른다.     
 
