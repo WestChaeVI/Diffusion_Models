@@ -10,7 +10,7 @@
 
 + **Diffusion model은 data에 noise를 조금씩 더해가거나 noise로부터 조금씩 복원해가는 과정**을 통해 **data를 generate하는 model**이다.    
 
-  - 주어진 iamge에 time $t$에 따른 상수의 파라미터를 갖는 작은 Gaussian noise를 $t$에 대해 더해나가는데, image가 destroy하게 되면 결국 noise의 행태로 남을 것이다. (normal distribution을 따른다.)    
+  - 주어진 image에 time $t$에 따른 상수의 파라미터를 갖는 작은 Gaussian noise를 $t$에 대해 더해나가는데, image가 destroy하게 되면 결국 noise의 행태로 남을 것이다. (normal distribution을 따른다.)    
 
   - 이런 상황에서 **normal distribution에 대한 noise가 주어졌을 때, 어떻게 복원할 것인가에 대한 문제**이다.    
 
@@ -36,7 +36,7 @@
 
 <p align='center'><img src='https://github.com/WestChaeVI/Diffusion_Models/assets/104747868/3b315da2-5c32-432c-9448-1bef3c7ed6c2'></p>      
 
-+ 주어진 iamge를 $x_0$라고 하고, 서서히 noise를 추가해가는 과정을 $q(\cdot)$ 라고 해보자.    
++ 주어진 image를 $x_0$라고 하고, 서서히 noise를 추가해가는 과정을 $q(\cdot)$ 라고 해보자.    
 
 + 그럼 $x_0$에 noise를 적용해서 $x_1$를 만드는 것을 **$q(x_1|x_0)$** 이라고 표현할 수 있다.    
 
